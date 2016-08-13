@@ -18,5 +18,17 @@ namespace LunraGames
 			changed = changed && changedStaysTrue ? true : !EqualityComparer<T>.Default.Equals(startValue, resultValue);
 			return resultValue;
 		}
+
+		public static bool Compare(Func<object, object, bool> comparison, params object[] objects) 
+		{
+			if (objects.Length % 2 != 0) throw new ArgumentOutOfRangeException("objects", "An even number of objects must be passed for camparison");
+
+			for (var i = 0; i < objects.Length; i += 2)
+			{
+				if (!comparison(objects[i], objects[i + 1])) return false;
+			}
+
+			return true;
+		}
 	}
 }
