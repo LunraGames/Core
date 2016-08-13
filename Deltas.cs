@@ -19,7 +19,12 @@ namespace LunraGames
 			return resultValue;
 		}
 
-		public static bool Compare(Func<object, object, bool> comparison, params object[] objects) 
+		/// <summary>
+		/// Passes each pair of objects through the provided comparison Func, and returns true if each comparison returns true.
+		/// </summary>
+		/// <param name="comparison">Comparison test.</param>
+		/// <param name="objects">Object pairs.</param>
+		public static bool PairCompare(Func<object, object, bool> comparison, params object[] objects) 
 		{
 			if (objects.Length % 2 != 0) throw new ArgumentOutOfRangeException("objects", "An even number of objects must be passed for camparison");
 
@@ -29,6 +34,16 @@ namespace LunraGames
 			}
 
 			return true;
+		}
+
+		/// <summary>
+		/// Compares the equality of each pair of objects.
+		/// </summary>
+		/// <returns><c>true</c>, if each pair of objects equality passes, <c>false</c> otherwise.</returns>
+		/// <param name="objects">Object pairs.</param>
+		public static bool PairEquality(params object[] objects)
+		{
+			return PairCompare((o0, o1) => o0 == o1, objects);
 		}
 	}
 }
