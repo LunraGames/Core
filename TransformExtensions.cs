@@ -52,5 +52,17 @@ namespace LunraGames
 
 			return result;
 		}
+
+		/// <summary>
+		/// Play mode only!
+		/// </summary>
+		/// <remarks>
+		/// Thanks Onur!
+		/// </remarks>
+		public static bool IsPrefab(this Transform transform) {
+			if (Application.isEditor && !Application.isPlaying) throw new InvalidOperationException("IsPrefab only allowed to be used in playmode");
+
+			return transform.gameObject.scene.buildIndex < 0;
+		}
 	}
 }
