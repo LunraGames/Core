@@ -42,13 +42,13 @@ namespace LunraGames
 		/// <value>The verbose serializer settings.</value>
 		static JsonSerializerSettings VerboseSerializerSettings {
 			get {
-				if (_SerializerSettings == null) {
-					_SerializerSettings = new JsonSerializerSettings();
-					_SerializerSettings.TypeNameHandling = TypeNameHandling.All;
-					_SerializerSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
-					foreach (var converter in Converters) _SerializerSettings.Converters.Add(converter);
+				if (_VerboseSerializerSettings == null) {
+					_VerboseSerializerSettings = new JsonSerializerSettings();
+					_VerboseSerializerSettings.TypeNameHandling = TypeNameHandling.All;
+					_VerboseSerializerSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
+					foreach (var converter in Converters) _VerboseSerializerSettings.Converters.Add(converter);
 				}
-				return _SerializerSettings;
+				return _VerboseSerializerSettings;
 			}
 		}
 
