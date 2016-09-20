@@ -117,5 +117,10 @@ namespace LunraGames
 				default: return ((JValue)token).Value;
 			}
 		}
+
+		public static string Serialize(this object target, bool verbose = false)
+		{
+			return SerializeJson(target, verbose);
+		}
 	}
 }
