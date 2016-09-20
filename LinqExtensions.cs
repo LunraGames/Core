@@ -9,7 +9,7 @@ namespace LunraGames
 	{
 		public static IEnumerable<string> FriendlyMatch(this IEnumerable<string> entries, string search)
 		{
-			return FriendlyMatch<string>(entries, search, s => s);
+			return FriendlyMatch(entries, search, s => s);
 		}
 
 		public static IEnumerable<T> FriendlyMatch<T>(this IEnumerable<T> entries, string search, Func<T, string> keySelector)
@@ -19,6 +19,16 @@ namespace LunraGames
 			foreach (var character in search) pattern += character+".*";
 			var regex = new Regex(pattern, RegexOptions.IgnoreCase);
 			return entries.Where(e => regex.IsMatch(keySelector(e)));
+		}
+
+		public static T FirstOrFallback<T>(this IEnumerable<T> entries, Func<T, bool> predicate, T fallback = default(T))
+		{
+			return entries.DefaultIfEmpty(fallback).FirstOrDefault(predicate);
+		}
+
+		public static T FirstOrFallback<T>(this IEnumerable<T> entries, T fallback = default(T))
+		{
+			return entries.DefaultIfEmpty(fallback).FirstOrDefault();
 		}
 	}
 }
