@@ -4,7 +4,7 @@ namespace LunraGames
 {
 	public static class GameObjectExtensions 
 	{
-		public static GameObject InstantiateChild(
+		public static GameObject InstantiateChildObject(
 			this GameObject gameObject,
 			GameObject prefab,
 			Vector3? localPosition = null,
@@ -36,9 +36,9 @@ namespace LunraGames
 			Quaternion? localRotation = null,
 			bool? setActive = null
 		) 
-			where T : Component
+			where T : MonoBehaviour
 		{
-			return gameObject.InstantiateChild(prefab.gameObject, localPosition, localScale, localRotation, setActive).GetComponent<T>();
+			return gameObject.InstantiateChildObject(prefab.gameObject, localPosition, localScale, localRotation, setActive).GetComponent<T>();
 		}
 	}
 }
