@@ -4,6 +4,30 @@ namespace LunraGames
 {
 	public static class GameObjectExtensions 
 	{
+		public static GameObject InstantiateChild(
+			this GameObject gameObject,
+			GameObject prefab,
+			Vector3? localPosition = null,
+			Vector3? localScale = null,
+			Quaternion? localRotation = null,
+			bool? setActive = null
+		)
+		{
+			localPosition = localPosition.HasValue ? localPosition : Vector3.zero;
+			localScale = localScale.HasValue ? localScale : Vector3.one;
+			localRotation = localRotation.HasValue ? localRotation : Quaternion.identity;
+
+			var child = Object.Instantiate(prefab).transform;
+			child.SetParent(gameObject.transform);
+			child.localScale = localScale.Value;
+			child.localPosition = localPosition.Value;
+			child.localRotation = localRotation.Value;
+
+			if (setActive.HasValue) child.gameObject.SetActive(setActive.Value);
+
+			return child.gameObject;
+		}
+
 		public static T InstantiateChild<T>(
 			this GameObject gameObject, 
 			T prefab, 
@@ -12,21 +36,9 @@ namespace LunraGames
 			Quaternion? localRotation = null,
 			bool? setActive = null
 		) 
-			where T : MonoBehaviour
+			where T : Component
 		{
-			localPosition = localPosition.HasValue ? localPosition : Vector3.zero;
-			localScale = localScale.HasValue ? localScale : Vector3.one;
-			localRotation = localRotation.HasValue ? localRotation : Quaternion.identity;
-
-			T child = Object.Instantiate(prefab).GetComponent<T>();
-			child.transform.SetParent(gameObject.transform);
-			child.transform.localScale = localScale.Value;
-			child.transform.localPosition = localPosition.Value;
-			child.transform.localRotation = localRotation.Value;
-
-			if (setActive.HasValue) child.gameObject.SetActive(setActive.Value);
-			
-			return child;
+			return gameObject.InstantiateChild(prefab.gameObject, localPosition, localScale, localRotation, setActive).GetComponent<T>();
 		}
 	}
 }
