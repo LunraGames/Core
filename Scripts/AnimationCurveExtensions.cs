@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace LunraGames
 {
@@ -17,39 +18,78 @@ namespace LunraGames
 		/// <param name="curve1">Curve1.</param>
 		public static bool CurvesEqual(AnimationCurve curve0, AnimationCurve curve1)
 		{
-			var changed = (curve0 == null && curve1 != null) || (curve0 != null && curve1 == null);
+			if (curve0 == null && curve1 == null) return true;
+			if ((curve0 == null && curve1 != null) || (curve0 != null && curve1 == null)) return false;
 
-			if (changed) return changed;
+			if (curve0.keys.Length != curve1.keys.Length) return false;
 
-			if (curve0.keys.Length == curve1.keys.Length)
+			var pairedKeys = new List<Keyframe>(curve0.keys);
+			foreach (var key in curve1.keys)
 			{
-				var pairedKeys = new List<Keyframe>(curve0.keys);
-				foreach (var key in curve1.keys)
+				int? index = null;
+				for (var i = 0; i < pairedKeys.Count; i++)
 				{
-					int? index = null;
-					for (var i = 0; i < pairedKeys.Count; i++)
+					var k = pairedKeys[i];
+					if (Mathf.Approximately(key.inTangent, k.inTangent) && Mathf.Approximately(key.outTangent, k.outTangent) && Mathf.Approximately(key.time, k.time) && Mathf.Approximately(key.value, k.value))
 					{
-						var k = pairedKeys[i];
-						if (Mathf.Approximately(key.inTangent, k.inTangent) && Mathf.Approximately(key.outTangent, k.outTangent) && Mathf.Approximately(key.time, k.time) && Mathf.Approximately(key.value, k.value))
-						{
-							index = i;
-						}
-						if (index.HasValue) break;
+						index = i;
 					}
-					if (index.HasValue)
-					{
-						pairedKeys.RemoveAt(index.Value);
-					}
-					else
-					{
-						changed = true;
-						break;
-					}
+					if (index.HasValue) break;
 				}
+				if (index.HasValue) pairedKeys.RemoveAt(index.Value);
+				else return false;
 			}
-			else changed = true;
+			return true;
+		}
 
-			return changed;
+		public static float MinimumKey(this AnimationCurve curve)
+		{
+			return curve.keys.Min(k => k.value);
+		}
+
+		public static float MaximumKey(this AnimationCurve curve)
+		{
+			return curve.keys.Max(k => k.value);
+		}
+
+		public static float AverageKey(this AnimationCurve curve)
+		{
+			return curve.keys.Average(k => k.value);
+		}
+
+		public static float MinimumSample(this AnimationCurve curve, int count)
+		{
+			return curve.Samples(count).Min();
+		}
+
+		public static float MaximumSample(this AnimationCurve curve, int count)
+		{
+			return curve.Samples(count).Max();
+		}
+
+		public static float AverageSample(this AnimationCurve curve, int count)
+		{
+			return curve.Samples(count).Average();
+		}
+
+		public static IEnumerable<float> Samples(this AnimationCurve curve, int count)
+		{
+			var samples = new List<float> {};
+
+			if (curve.keys == null || curve.length == 0) return samples;
+
+			var minTime = curve.keys.Min(k => k.time);
+			var maxTime = curve.keys.Max(k => k.time);
+			var delta = maxTime - minTime;
+			var sampleRange = delta / count;
+			var sampleOffset = sampleRange * 0.5f;
+			var currSampleTime = minTime + sampleOffset;
+			for (var i = 0; i < count; i++)
+			{
+				samples.Add(curve.Evaluate(currSampleTime));
+				currSampleTime += sampleRange;
+			}
+			return samples;
 		}
 	}
 }
