@@ -1,4 +1,4 @@
-﻿namespace LunraGames
+﻿namespace LunraGamesEditor
 {
 	public class Strings
 	{

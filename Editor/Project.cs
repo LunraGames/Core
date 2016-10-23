@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.IO;
 
-namespace LunraGames
+namespace LunraGamesEditor
 {
 	public static class Project
 	{

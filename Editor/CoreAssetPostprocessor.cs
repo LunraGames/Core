@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEditor;
 
-namespace LunraGames
+namespace LunraGamesEditor
 {
 	public class CoreAssetPostprocessor : AssetPostprocessor 
 	{

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace LunraGames
+namespace LunraGamesEditor
 {
 	public enum GitflowBranches
 	{

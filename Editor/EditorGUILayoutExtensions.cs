@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEditor;
 
-namespace LunraGames
+namespace LunraGamesEditor
 {
 	public static class EditorGUILayoutExtensions
 	{

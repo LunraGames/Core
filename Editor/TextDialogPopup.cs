@@ -2,7 +2,7 @@
 using UnityEngine;
 using System;
 
-namespace LunraGames
+namespace LunraGamesEditor
 {
 	public class TextDialogPopup : EditorWindow 
 	{

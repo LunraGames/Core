@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LunraGames
+namespace LunraGamesEditor
 {
 	[Serializable]
 	public struct GitBlock

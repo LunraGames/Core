@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
 using System;
 
-namespace LunraGames
+namespace LunraGamesEditor
 {
 	public class TextureFarmer 
 	{

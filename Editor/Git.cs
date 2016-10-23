@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace LunraGames
+namespace LunraGamesEditor
 {
 	public static class Git
 	{

@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 
-namespace LunraGames
+namespace LunraGamesEditor
 {
 	public static class PluginGuard
 	{
