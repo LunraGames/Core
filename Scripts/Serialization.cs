@@ -30,6 +30,7 @@ namespace LunraGames
 				{
 					_SerializerSettings = new JsonSerializerSettings();
 					_SerializerSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
+					_SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
 					foreach (var converter in Converters) _SerializerSettings.Converters.Add(converter);
 				}
 				return _SerializerSettings;
@@ -47,11 +48,24 @@ namespace LunraGames
 				if (_VerboseSerializerSettings == null) {
 					_VerboseSerializerSettings = new JsonSerializerSettings();
 					_VerboseSerializerSettings.TypeNameHandling = TypeNameHandling.All;
+					_VerboseSerializerSettings.TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
 					_VerboseSerializerSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
+					_VerboseSerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
 					foreach (var converter in Converters) _VerboseSerializerSettings.Converters.Add(converter);
 				}
 				return _VerboseSerializerSettings;
 			}
+		}
+
+		public static JsonSerializerSettings SettingsFromSerializer(JsonSerializer serializer, bool includeConverters = false)
+		{
+			var settings = new JsonSerializerSettings();
+			settings.TypeNameHandling = serializer.TypeNameHandling;
+			settings.TypeNameAssemblyFormat = serializer.TypeNameAssemblyFormat;
+			settings.ObjectCreationHandling = serializer.ObjectCreationHandling;
+			settings.DefaultValueHandling = serializer.DefaultValueHandling;
+			if (includeConverters) settings.Converters = serializer.Converters;
+			return settings;
 		}
 
 		public static object DeserializeJson(Type type, string json, object defaultValue = null, bool verbose = false)

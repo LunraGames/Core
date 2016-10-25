@@ -29,7 +29,9 @@ namespace LunraGames.Converters
 		{
 			var quaternion = (Quaternion)value;
 			var simple = new SimpleQuaternion { x = quaternion.x, y = quaternion.y, z = quaternion.z , w = quaternion.w };
-			writer.WriteRawValue(JsonConvert.SerializeObject(simple));
+			var settings = Serialization.SettingsFromSerializer(serializer);
+			settings.TypeNameHandling = TypeNameHandling.None;
+			writer.WriteRawValue(JsonConvert.SerializeObject(simple, settings));
 		}
 
 		public override object ReadJson (JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

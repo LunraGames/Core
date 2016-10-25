@@ -29,7 +29,9 @@ namespace LunraGames.Converters
 		{
 			var vector4 = (Vector4)value;
 			var simple = new SimpleVector4 { x = vector4.x, y = vector4.y, z = vector4.z, w = vector4.w };
-			writer.WriteRawValue(JsonConvert.SerializeObject(simple));
+			var settings = Serialization.SettingsFromSerializer(serializer);
+			settings.TypeNameHandling = TypeNameHandling.None;
+			writer.WriteRawValue(JsonConvert.SerializeObject(simple, settings));
 		}
 
 		public override object ReadJson (JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

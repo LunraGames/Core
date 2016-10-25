@@ -29,7 +29,9 @@ namespace LunraGames.Converters
 		{
 			var color = (Color)value;
 			var simple = new SimpleColor { r = color.r, g = color.g, b = color.b, a = color.a };
-			writer.WriteRawValue(JsonConvert.SerializeObject(simple));
+			var settings = Serialization.SettingsFromSerializer(serializer);
+			settings.TypeNameHandling = TypeNameHandling.None;
+			writer.WriteRawValue(JsonConvert.SerializeObject(simple, settings));
 		}
 
 		public override object ReadJson (JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

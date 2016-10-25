@@ -29,7 +29,9 @@ namespace LunraGames.Converters
 		{
 			var rect = (Rect)value;
 			var simple = new SimpleRect { x = rect.x, y = rect.y, width = rect.width, height = rect.height };
-			writer.WriteRawValue(JsonConvert.SerializeObject(simple));
+			var settings = Serialization.SettingsFromSerializer(serializer);
+			settings.TypeNameHandling = TypeNameHandling.None;
+			writer.WriteRawValue(JsonConvert.SerializeObject(simple, settings));
 		}
 
 		public override object ReadJson (JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
