@@ -128,5 +128,14 @@ namespace LunraGames
 			return new Color(color.r, color.g, color.b, a);
 		}
 		#endregion
+
+		public static bool Approximately(this Color color, Color other)
+		{
+			return
+					Mathf.Approximately(color.r, other.r) &&
+					Mathf.Approximately(color.g, other.g) &&
+					Mathf.Approximately(color.b, other.b) &&
+					Mathf.Approximately(color.a, other.a);
+		}
 	}
 }

@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
+
 using UnityEngine;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Converters;
+
 using LunraGames.Converters;
+using QuaternionConverter = LunraGames.Converters.QuaternionConverter;
+using ColorConverter = LunraGames.Converters.ColorConverter;
 
 namespace LunraGames
 {
@@ -32,6 +38,8 @@ namespace LunraGames
 					_SerializerSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
 					_SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
 					foreach (var converter in Converters) _SerializerSettings.Converters.Add(converter);
+					foreach (var converter in AddedConverters) _SerializerSettings.Converters.Add(converter);
+					_SerializerSettings.Converters.Remove(_SerializerSettings.Converters.First(c => c.GetType() == typeof(VectorConverter)));
 				}
 				return _SerializerSettings;
 			}
@@ -52,8 +60,23 @@ namespace LunraGames
 					_VerboseSerializerSettings.ObjectCreationHandling = ObjectCreationHandling.Replace;
 					_VerboseSerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
 					foreach (var converter in Converters) _VerboseSerializerSettings.Converters.Add(converter);
+					foreach (var converter in AddedConverters) _VerboseSerializerSettings.Converters.Add(converter);
+					_VerboseSerializerSettings.Converters.Remove(_VerboseSerializerSettings.Converters.First(c => c.GetType() == typeof(VectorConverter)));
 				}
 				return _VerboseSerializerSettings;
+			}
+		}
+
+		static List<JsonConverter> AddedConverters = new List<JsonConverter>();
+
+		public static void AddConverters(params JsonConverter[] converters)
+		{
+			foreach (var converter in converters)
+			{
+				if (AddedConverters.Contains(converter)) continue;
+				AddedConverters.Add(converter);
+				if (_SerializerSettings != null) _SerializerSettings.Converters.Add(converter);
+				if (_VerboseSerializerSettings != null) _VerboseSerializerSettings.Converters.Add(converter);
 			}
 		}
 

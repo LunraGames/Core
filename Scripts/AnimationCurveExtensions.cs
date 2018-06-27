@@ -91,5 +91,10 @@ namespace LunraGames
 			}
 			return samples;
 		}
+
+		public static AnimationCurve Constant(float value = 0f)
+		{
+			return AnimationCurve.Linear(0f, value, 1f, value);
+		}
 	}
 }

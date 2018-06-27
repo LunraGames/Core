@@ -30,5 +30,11 @@ namespace LunraGames
 		{
 			return entries.DefaultIfEmpty(fallback).FirstOrDefault();
 		}
+
+		public static T Random<T>(this IEnumerable<T> entries, T fallback = default(T))
+		{
+			if (entries == null || entries.Count() == 0) return fallback;
+			return entries.ElementAt(UnityEngine.Random.Range(0, entries.Count()));
+		}
 	}
 }

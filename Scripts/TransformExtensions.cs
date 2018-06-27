@@ -7,9 +7,17 @@ namespace LunraGames
 {
 	public static class TransformExtensions
 	{
-		public static void ClearChildren(this Transform transform)
+		public static void ClearChildren(this Transform transform, Func<Transform, bool> condition = null)
 		{
-			for (var i = 0; i < transform.childCount; i++) Object.Destroy(transform.GetChild(i).gameObject);
+			transform.ClearChildren<Transform>(condition);
+		}
+
+		public static void ClearChildren<T>(this Transform transform, Func<T, bool> condition = null) where T : Component
+		{
+			foreach (var child in transform.GetChildren(condition))
+			{
+				Object.Destroy(child.gameObject);
+			}
 		}
 
 		public static void SetChildrenActive(this Transform transform, bool active) {
@@ -51,6 +59,25 @@ namespace LunraGames
 			}
 
 			return result;
+		}
+
+		public static Transform GetFirstDescendantOrDefault(this Transform transform, Func<Transform, bool> condition = null)
+		{
+			return transform.GetFirstDescendantOrDefault<Transform>(condition);
+		}
+
+		public static T GetFirstDescendantOrDefault<T>(this Transform transform, Func<T, bool> condition = null) where T : Component
+		{
+			var children = transform.GetChildren();
+			foreach (var child in children) 
+			{
+				var component = child.GetComponent<T>();
+				if (component != null && (condition == null || condition(component))) return component;
+				var result = child.GetFirstDescendantOrDefault(condition);
+				if (result != null) return result;
+			}
+
+			return null;
 		}
 
 		/// <summary>
